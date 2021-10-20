@@ -33,7 +33,6 @@ class ProbabilityDensityFunction:
             start, stop = stop, start
         return self.pdf_spline.integral(start,stop)
 
-        
     def sampler(self, n):
         """ This function returns n values distribuited as the pdf_spline.
             The sampling is done calculating the inverse of the cumulative.
@@ -41,11 +40,10 @@ class ProbabilityDensityFunction:
         """
         cdf_spline = self.pdf_spline.antiderivative()
         ppf_spline = InterpolatedUnivariateSpline(cdf_spline(self.x),self.x,k=self.spline_order)
-        
+
         rnd_values = np.random.random(n)
         sampled_values = ppf_spline(rnd_values)
         return sampled_values
-        
 
 def data_orderer(x,y):
     ''' Takes two np arrays in input and orders the 1st ascending, the 2nd as
@@ -61,7 +59,6 @@ def triang_pdf(z):
         an array or a single value.
     '''
     return triang.pdf(z,0.5)
-
 
 def sampling_a_pdf(pdf, n, start, stop,):
     ''' Takes a function as pdf and samples n points from it in [start,stop]
