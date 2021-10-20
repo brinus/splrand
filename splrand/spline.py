@@ -20,7 +20,7 @@ class ProbabilityDensityFunction:
        self.pdf_spline = InterpolatedUnivariateSpline(self.x,self.y,k=self.spline_order)
        
     def __call__(self,z):
-        return self.pdf_spline(self.z)
+        return self.pdf_spline(z)
         
     def probability(self,start,stop):
         """ Calculates the probability in the (start,stop) interval with the  \
@@ -32,16 +32,17 @@ class ProbabilityDensityFunction:
             stop = tmp
         return self.pdf_spline.integral(start,stop)
         
-    def sampler(self, rnd):
-        """ rnd is a single random value in [0,1] or a np array of random values\
-            This function returns len(rnd) values distribuited as the pdf_spline.
-            The sampling is done calculating the inverse of the cumulative. The \
-            cdf is taken as the antiderivative of the pdf_spline.
+    def sampler(self, n):
+        """ This function returns n values distribuited as the pdf_spline.
+            The sampling is done calculating the inverse of the cumulative.
+            The cdf is taken as the antiderivative of the pdf_spline.
         """
         cdf_spline = self.pdf_spline.antiderivative()
         ppf_spline = InterpolatedUnivariateSpline(cdf_spline(self.x),self.x,k=self.spline_order)
-        return ppf_spline(rnd)
         
+        rnd_values = np.random.random(n)
+        sampled_values = ppf_spline(rnd_values)
+        return sampled_values
         
         
         
@@ -61,7 +62,7 @@ def triang_pdf(z):
     return triang.pdf(z,0.5)
     
     
-def sampling_a_pdf(pdf, n, start, stop,):
+def sampling_a_pdf(pdf, n, start, stop):
     """ Takes a function as pdf and samples n points from it in [start,stop]   \
         interval. If start <= stop, the two are swapped. If the pdf is not     \
         normalized (order of tolerance 1e-7), it is divided by its integral.
@@ -82,17 +83,20 @@ def sampling_a_pdf(pdf, n, start, stop,):
     
     
 if __name__ == '__main__':
-    n = int(1e5)
+    n = int(1e3)
     x,y = sampling_a_pdf(triang_pdf,n,0,1.)
     x,y = data_orderer(x,y)
     pdf_to_sample = ProbabilityDensityFunction(x,y,3)
+    print(pdf_to_sample(0.))
     z=np.linspace(0,1.,int(1e3))
     plt.plot(z, pdf_to_sample.pdf_spline(z),label='3rd grade spline')
-    #plt.errorbar(x,y,fmt='.')
+    plt.errorbar(x,y,fmt='.')
     print(pdf_to_sample.probability(0,0.5))
+    w = pdf_to_sample.sampler(100000)
+    plt.hist(w,100,density=True)
     
     
-    plt.legend()
+    #plt.legend()
     plt.show()
     
     
