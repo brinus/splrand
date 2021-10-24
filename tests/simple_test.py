@@ -12,7 +12,7 @@ from splrand import spline
 
 class TestSpline(unittest.TestCase):
     def test1(self):
-        N = int(1e5)
+        N = int(1e3)
         x, y = spline.sampling_a_pdf(spline.triang_pdf, N, 0, 1.)
         x, y = spline.data_orderer(x,y)
         pdf_to_sample = spline.ProbabilityDensityFunction(x,y,3)

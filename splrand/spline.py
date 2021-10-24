@@ -13,8 +13,8 @@ class ProbabilityDensityFunction:
     '''Class defining the pdf from a set of datas (x,pdf(x))
     '''
     def __init__(self,x,y,spline_order):
-        ''' x and y are two numpy arrays sampling the pdf on a grid of values. 
-           spline_order is used to define the order of the spline used for    
+        ''' x and y are two numpy arrays sampling the pdf on a grid of values.
+           spline_order is used to define the order of the spline used for
            calculating the pdf.
         '''
         self.x = x
@@ -34,6 +34,13 @@ class ProbabilityDensityFunction:
         return self.pdf_spline.integral(start,stop)
 
     def sampler(self, n):
+        """ Returns n float values distribuited as the pdf_spline.
+            
+            :param n: Number of points to sample
+            :type n: integer
+            :return: Numpy array of sampled points.
+            :rtype: numpy.array(type=float)
+        """
         """ This function returns n values distribuited as the pdf_spline.
             The sampling is done calculating the inverse of the cumulative.
             The cdf is taken as the antiderivative of the pdf_spline.
@@ -69,8 +76,6 @@ def sampling_a_pdf(pdf, n, start, stop,):
         start, stop = stop, start
 
     norm = integrate.quad(pdf, start, stop)[0]
-    #print(norm)
-
     np.random.seed(283847)
     x = (stop-start) * np.random.random(n) + start
     y = pdf(x)/norm
