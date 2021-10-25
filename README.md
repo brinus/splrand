@@ -1,5 +1,7 @@
 # splrand
 
-![example workflow](https://github.com/chiaratomaiuolo/splrand/actions/workflows/main.yml/badge.svg)
+
+https://docs.readthedocs.io/en/latest/?badge=latest
+
 
 Generate univariate random numbers according to a given distribution using splines.
