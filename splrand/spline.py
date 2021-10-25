@@ -2,6 +2,7 @@
 '''
 
 #pylint: disable=invalid-name,redefined-outer-name
+import unittest
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -56,6 +57,7 @@ def data_orderer(x,y):
     ''' Takes two np arrays in input and orders the 1st ascending, the 2nd as
         the 1st.
     '''
+    assert len(x) == len(y)
     p = x.argsort()
     x = x[p]
     y = y[p]
