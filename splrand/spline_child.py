@@ -7,7 +7,7 @@ import numpy as np
 from scipy.interpolate import InterpolatedUnivariateSpline
 
 class ProbabilityDensityFunction(InterpolatedUnivariateSpline):
-    '''Class defining the pdf from a set of datas (x,pdf(x))
+    ''' Class defining the pdf from a set of datas (x,pdf(x))
     '''
     def __init__(self, x, y, k=3):
         ''' x and y are two numpy arrays sampling the pdf on a grid of values.
